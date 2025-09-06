@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Book - Experiment & Create</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-book-open"></i> Recipe Book</h1>
+            <p class="tagline">Experiment, Create, Perfect Your Recipes</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="recipes">
+                <i class="fas fa-list"></i> My Recipes
+            </button>
+            <button class="tab-btn" data-tab="create">
+                <i class="fas fa-plus-circle"></i> Create Recipe
+            </button>
+        </nav>
+
+        <!-- Recipe List View -->
+        <section id="recipes-tab" class="tab-content active">
+            <div class="search-bar">
+                <input type="text" id="recipe-search" placeholder="Search recipes...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div id="recipe-list" class="recipe-grid">
+                <!-- Recipes will be populated here -->
+            </div>
+        </section>
+
+        <!-- Create/Edit Recipe View -->
+        <section id="create-tab" class="tab-content">
+            <form id="recipe-form" class="recipe-form">
+                <div class="form-section">
+                    <h2 id="form-title">Create New Recipe</h2>
+                    
+                    <!-- Basic Information -->
+                    <div class="form-group">
+                        <label for="recipe-name">Recipe Name *</label>
+                        <input type="text" id="recipe-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipe-description">Description</label>
+                        <textarea id="recipe-description" rows="3" placeholder="Brief description of your recipe..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prep-time">Prep Time (minutes)</label>
+                            <input type="number" id="prep-time" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="cook-time">Cook Time (minutes)</label>
+                            <input type="number" id="cook-time" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="servings">Servings</label>
+                            <input type="number" id="servings" min="1" value="4">
+                        </div>
+                    </div>
+
+                    <!-- Photo Upload -->
+                    <div class="form-group">
+                        <label for="recipe-photo">Recipe Photo</label>
+                        <div class="photo-upload">
+                            <input type="file" id="recipe-photo" accept="image/*">
+                            <div class="photo-preview" id="photo-preview">
+                                <i class="fas fa-camera"></i>
+                                <span>Click to add photo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ingredients Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-list-ul"></i> Ingredients</h3>
+                    <div id="ingredients-list">
+                        <div class="ingredient-item">
+                            <input type="text" placeholder="Amount" class="ingredient-amount">
+                            <input type="text" placeholder="Unit" class="ingredient-unit">
+                            <input type="text" placeholder="Ingredient name" class="ingredient-name">
+                            <button type="button" class="btn-remove" onclick="removeIngredient(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-ingredient" class="btn-secondary">
+                        <i class="fas fa-plus"></i> Add Ingredient
+                    </button>
+                    
+                    <!-- Ingredient Effects Panel -->
+                    <div class="effects-panel" id="effects-panel">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Ingredient Effects & Tips</h4>
+                        <div id="ingredient-effects"></div>
+                    </div>
+                </div>
+
+                <!-- Procedures Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-list-ol"></i> Instructions</h3>
+                    <div id="instructions-list">
+                        <div class="instruction-item">
+                            <span class="step-number">1</span>
+                            <textarea placeholder="Describe this step..." rows="2"></textarea>
+                            <button type="button" class="btn-remove" onclick="removeInstruction(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-instruction" class="btn-secondary">
+                        <i class="fas fa-plus"></i> Add Step
+                    </button>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-sticky-note"></i> Custom Notes & Experiments</h3>
+                    <textarea id="recipe-notes" rows="4" placeholder="Add your personal notes, variations tried, what worked well, what didn't..."></textarea>
+                </div>
+
+                <!-- Health Considerations -->
+                <div class="form-section">
+                    <h3><i class="fas fa-heart"></i> Health Considerations</h3>
+                    <div class="health-tags">
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="gluten-free"> Gluten-Free Friendly
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="dairy-free"> Dairy-Free Friendly
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="nut-free"> Nut-Free
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="low-sugar"> Low Sugar
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="diabetic-friendly"> Diabetic-Friendly
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" value="heart-healthy"> Heart-Healthy
+                        </label>
+                    </div>
+                    <div class="substitutions-panel" id="substitutions-panel">
+                        <h4><i class="fas fa-exchange-alt"></i> Suggested Substitutions</h4>
+                        <div id="ingredient-substitutions"></div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Recipe
+                    </button>
+                    <button type="button" id="cancel-btn" class="btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Recipe Detail Modal -->
+        <div id="recipe-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-recipe-name"></h2>
+                    <button class="close-btn" onclick="closeRecipeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Recipe details will be populated here -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="edit-recipe-btn">
+                        <i class="fas fa-edit"></i> Edit Recipe
+                    </button>
+                    <button class="btn-secondary" onclick="closeRecipeModal()">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
