@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeBook - Your Culinary Companion</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1 class="logo">🍳 RecipeBook</h1>
+            <nav class="main-nav">
+                <button class="nav-btn active" data-section="recipes">Recipes</button>
+                <button class="nav-btn" data-section="experiments">Experiments</button>
+                <button class="nav-btn" data-section="health">Health</button>
+                <button class="nav-btn" data-section="calculator">Calculator</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Recipe Management Section -->
+        <section id="recipes" class="content-section active">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Recipe Collection</h2>
+                    <button class="btn btn-primary" id="add-recipe-btn">+ Add Recipe</button>
+                </div>
+                
+                <div class="recipe-filters">
+                    <input type="search" id="recipe-search" placeholder="Search recipes..." class="search-input">
+                    <select id="category-filter" class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="dessert">Dessert</option>
+                        <option value="snack">Snack</option>
+                        <option value="beverage">Beverage</option>
+                    </select>
+                </div>
+
+                <div class="recipes-grid" id="recipes-grid">
+                    <!-- Recipes will be populated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Recipe Experiments Section -->
+        <section id="experiments" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Recipe Experiments</h2>
+                    <button class="btn btn-primary" id="start-experiment-btn">+ Start Experiment</button>
+                </div>
+                
+                <div class="experiment-stats">
+                    <div class="stat-card">
+                        <h3>Total Experiments</h3>
+                        <span class="stat-number" id="total-experiments">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Success Rate</h3>
+                        <span class="stat-number" id="success-rate">0%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Experiments</h3>
+                        <span class="stat-number" id="active-experiments">0</span>
+                    </div>
+                </div>
+
+                <div class="experiments-list" id="experiments-list">
+                    <!-- Experiments will be populated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Health & Substitutions Section -->
+        <section id="health" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Health & Dietary Considerations</h2>
+                </div>
+                
+                <div class="health-tools">
+                    <div class="tool-card">
+                        <h3>Dietary Restrictions</h3>
+                        <div class="dietary-options">
+                            <label><input type="checkbox" id="gluten-free"> Gluten-Free</label>
+                            <label><input type="checkbox" id="dairy-free"> Dairy-Free</label>
+                            <label><input type="checkbox" id="vegan"> Vegan</label>
+                            <label><input type="checkbox" id="keto"> Keto</label>
+                            <label><input type="checkbox" id="low-sodium"> Low Sodium</label>
+                            <label><input type="checkbox" id="diabetic"> Diabetic Friendly</label>
+                        </div>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>Ingredient Substitution Finder</h3>
+                        <div class="substitution-finder">
+                            <input type="text" id="ingredient-input" placeholder="Enter ingredient to substitute...">
+                            <button class="btn btn-secondary" id="find-substitutions">Find Substitutions</button>
+                            <div class="substitution-results" id="substitution-results"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recipe Calculator Section -->
+        <section id="calculator" class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Recipe Scaling Calculator</h2>
+                </div>
+                
+                <div class="calculator-tools">
+                    <div class="tool-card">
+                        <h3>Scale Recipe</h3>
+                        <div class="scaling-controls">
+                            <label>Original Servings: <input type="number" id="original-servings" value="4" min="1"></label>
+                            <label>Desired Servings: <input type="number" id="desired-servings" value="6" min="1"></label>
+                            <div class="scaling-factor">Scaling Factor: <span id="scaling-factor">1.5x</span></div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>Ingredient Effects Monitor</h3>
+                        <div class="effects-monitor" id="effects-monitor">
+                            <!-- Effects and warnings will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Recipe Modal -->
+    <div class="modal" id="recipe-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Recipe</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="recipe-form">
+                    <div class="form-group">
+                        <label for="recipe-name">Recipe Name</label>
+                        <input type="text" id="recipe-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipe-category">Category</label>
+                        <select id="recipe-category" required>
+                            <option value="">Select Category</option>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="dessert">Dessert</option>
+                            <option value="snack">Snack</option>
+                            <option value="beverage">Beverage</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipe-servings">Servings</label>
+                        <input type="number" id="recipe-servings" min="1" value="4" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipe-prep-time">Prep Time (minutes)</label>
+                        <input type="number" id="recipe-prep-time" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipe-cook-time">Cook Time (minutes)</label>
+                        <input type="number" id="recipe-cook-time" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipe-photo">Recipe Photo</label>
+                        <input type="file" id="recipe-photo" accept="image/*">
+                        <div class="photo-preview" id="photo-preview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ingredients</label>
+                        <div class="ingredients-list" id="ingredients-list">
+                            <div class="ingredient-row">
+                                <input type="text" placeholder="Amount" class="ingredient-amount">
+                                <input type="text" placeholder="Unit" class="ingredient-unit">
+                                <input type="text" placeholder="Ingredient" class="ingredient-name">
+                                <button type="button" class="remove-ingredient">-</button>
+                            </div>
+                        </div>
+                        <button type="button" id="add-ingredient" class="btn btn-secondary">+ Add Ingredient</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipe-instructions">Instructions</label>
+                        <textarea id="recipe-instructions" rows="6" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipe-notes">Personal Notes</label>
+                        <textarea id="recipe-notes" rows="3" placeholder="Add your personal notes, tips, or modifications..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-recipe">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Recipe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experiment Modal -->
+    <div class="modal" id="experiment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Start New Experiment</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="experiment-form">
+                    <div class="form-group">
+                        <label for="experiment-recipe">Base Recipe</label>
+                        <select id="experiment-recipe" required>
+                            <option value="">Select a recipe to experiment with</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experiment-name">Experiment Name</label>
+                        <input type="text" id="experiment-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experiment-hypothesis">Hypothesis</label>
+                        <textarea id="experiment-hypothesis" rows="3" placeholder="What do you expect to happen with your changes?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experiment-changes">Changes Made</label>
+                        <textarea id="experiment-changes" rows="4" required placeholder="Describe the changes you're making to the original recipe..."></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Start Experiment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/ingredient-analyzer.js"></script>
+    <script src="js/health-advisor.js"></script>
+    <script src="js/experiment-tracker.js"></script>
+    <script src="js/recipe-manager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
